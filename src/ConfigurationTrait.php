@@ -78,11 +78,7 @@ trait ConfigurationTrait
             return;
         }
         $package = 'illuminate/support';
-        $latest = explode('.', preg_replace(
-            '/[^0-9,.]/',
-            '',
-            $this->findTheBestVersionAndNameForPackage($package)[1]
-        ))[0];
+        $latest = $this->getMajorVersion($this->findTheBestVersionAndNameForPackage($package)[1]);
 
         $choices = [
             '^' . ($latest - 2) . '.0|' . '^' . ($latest - 1) . '.0|^' . $latest . '.0',
@@ -108,19 +104,12 @@ trait ConfigurationTrait
      */
     protected function determinePhpDependencies(): void
     {
-        $phpVersions[] = explode('.', preg_replace(
-            '/[^0-9,.]/',
-            '',
-            $this->findTheBestVersionAndNameForPackage('php')[1]
-        ))[0];
+        $phpVersions[] = $this->getMajorVersion($this->findTheBestVersionAndNameForPackage('php')[1]);
         $phpVersions[] = PHP_MAJOR_VERSION;
         $phpVersions = array_unique($phpVersions);
         sort($phpVersions);
 
-        $php = implode(
-            '|',
-            array_map(fn($version) => '^' . $version . '.0', $phpVersions)
-        );
+        $php = implode('|', array_map(fn($version) => '^' . $version . '.0', $phpVersions));
 
         if ($this->command->confirm('Define PHP ’' . $php . '’ as (require) dependency?', true)) {
             $this->requirements['require'][] = 'php ' . $php;
@@ -181,7 +170,6 @@ trait ConfigurationTrait
             }
         }
 
-        $method = $name && $this->firstAuthor ? 'askSkippable' : 'ask';
         $method = $name && $this->firstAuthor ? 'askSkippable' : 'ask';
         $author = $this->command->{$method}('Add author ' . (count($this->authors) + 1) . ' (name)', $name);
 

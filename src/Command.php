@@ -334,4 +334,17 @@ class Command extends LuraInstaller
 
         return PlatformRequirementFilterFactory::ignoreNothing();
     }
+
+
+    /**
+     * Get Major Version of a Version string.
+     *
+     * @param string $version
+     *
+     * @return string
+     */
+    protected function getMajorVersion(string $version): string
+    {
+        return explode('.', preg_replace('/[^0-9,.]/', '', $version))[0];
+    }
 }
