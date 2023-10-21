@@ -46,7 +46,7 @@ trait ConfigurationTrait
             return;
         }
         foreach (array_keys($this->laravelPackageResources) as $resource) {
-            $this->command->confirm(
+            $this->laravelPackageResources[$resource] = $this->command->confirm(
                 'Add this package resource: ' . $resource,
                 $this->laravelPackageResources[$resource]
             );

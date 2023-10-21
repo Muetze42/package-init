@@ -1,3 +1,9 @@
-# Composer Init
+# (Laravel) Package Init Command
 
-`stable`
+Create a (Laravel) Composer package via cli.
+
+## Todos
+
+* About Command
+* Commands
+* Testing

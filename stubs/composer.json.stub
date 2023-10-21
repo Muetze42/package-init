@@ -9,7 +9,7 @@
     "require-dev": {},
     "autoload": {
         "psr-4": {
-            "{Vendor}\\{Name}\\": "src/"
+            "{namespace}\\": "src/"
         }
     },
     "autoload-dev": {},
@@ -17,7 +17,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "{Vendor}\\{Name}\\ServiceProvider"
+                "{namespace}\\ServiceProvider"
             ]
         }
     },

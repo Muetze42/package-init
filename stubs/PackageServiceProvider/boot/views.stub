@@ -1,0 +1,4 @@
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', '{name}');
+        $this->publishes([
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/{name}'),
+        ], '{name}-views');

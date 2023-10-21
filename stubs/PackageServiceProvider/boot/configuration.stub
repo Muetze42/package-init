@@ -1,0 +1,3 @@
+        $this->publishes([
+            __DIR__ . '/../config/{name}.php' => config_path('{name}.php'),
+        ], '{name}-config');
