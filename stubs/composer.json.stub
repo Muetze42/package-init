@@ -1,0 +1,27 @@
+{
+    "name": "{vendor}/{name}",
+    "type": null,
+    "description": null,
+    "keywords": [],
+    "license": null,
+    "repositories": [],
+    "require": {},
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "{Vendor}\\{Name}\\": "src/"
+        }
+    },
+    "autoload-dev": {},
+    "scripts": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "{Vendor}\\{Name}\\ServiceProvider"
+            ]
+        }
+    },
+    "config": {},
+    "minimum-stability": null,
+    "prefer-stable": null
+}

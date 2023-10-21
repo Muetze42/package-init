@@ -1,0 +1,42 @@
+{
+    "name": "norman-huth/package-init",
+    "description": "Initialize a (Laravel) Composer package.",
+    "license": "MIT",
+    "support": {
+        "docs": "https://github.com/Muetze42/package-init#readme",
+        "source": "https://github.com/Muetze42/package-init"
+    },
+    "authors": [
+        {
+            "name": "Norman Huth",
+            "homepage": "huth.it"
+        },
+        {
+            "name": "Nils Adermann",
+            "email": "naderman@naderman.de",
+            "homepage": "https://getcomposer.org"
+        },
+        {
+            "name": "Jordi Boggiano",
+            "email": "j.boggiano@seld.be",
+            "homepage": "https://getcomposer.org"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "composer/composer": "^2.6",
+        "norman-huth/lura": "^v3.1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "NormanHuth\\PackageInit\\": "src/"
+        }
+    },
+    "scripts": {
+        "post-package-install": [
+            "lura register norman-huth/package-init"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
