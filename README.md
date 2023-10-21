@@ -7,3 +7,4 @@ Create a (Laravel) Composer package via cli.
 * About Command
 * Commands
 * Testing
+* License file

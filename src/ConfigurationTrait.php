@@ -534,8 +534,7 @@ trait ConfigurationTrait
                     $this->preferredStability,
                     $platformRequirementFilter,
                     RepositorySet::ALLOW_UNACCEPTABLE_STABILITIES
-                )
-                )
+                ))
             ) {
                 // we must first verify if a valid package would be found in a lower priority repository
                 if (
@@ -668,7 +667,7 @@ trait ConfigurationTrait
 
     /**
      * Determine the name of the package.
-     * (Based on \Composer\Composer).
+     * (Based on \Composer\Composer)
      *
      * @author       Nils Adermann <naderman@naderman.de>
      * @author       Jordi Boggiano <j.boggiano@seld.be>
