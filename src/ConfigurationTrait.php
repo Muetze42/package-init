@@ -13,6 +13,7 @@ use Composer\Pcre\Preg;
 use Composer\Repository\PlatformRepository;
 use Composer\Repository\RepositorySet;
 use Composer\Util\Filesystem;
+use InvalidArgumentException;
 use NormanHuth\Helpers\Str;
 
 trait ConfigurationTrait
@@ -75,14 +76,11 @@ trait ConfigurationTrait
             return;
         }
         $package = 'illuminate/support';
-        $latest = explode(
-            '.',
-            preg_replace(
-                '/[^0-9,.]/',
-                '',
-                $this->findTheBestVersionAndNameForPackage($package)[1]
-            )
-        )[0];
+        $latest = explode('.', preg_replace(
+            '/[^0-9,.]/',
+            '',
+            $this->findTheBestVersionAndNameForPackage($package)[1]
+        ))[0];
 
         $choices = [
             '^' . ($latest - 2) . '.0|' . '^' . ($latest - 1) . '.0|^' . $latest . '.0',
@@ -108,14 +106,11 @@ trait ConfigurationTrait
      */
     protected function determinePhpDependencies(): void
     {
-        $phpVersions[] = explode(
-            '.',
-            preg_replace(
-                '/[^0-9,.]/',
-                '',
-                $this->findTheBestVersionAndNameForPackage('php')[1]
-            )
-        )[0];
+        $phpVersions[] = explode('.', preg_replace(
+            '/[^0-9,.]/',
+            '',
+            $this->findTheBestVersionAndNameForPackage('php')[1]
+        ))[0];
         $phpVersions[] = PHP_MAJOR_VERSION;
         $phpVersions = array_unique($phpVersions);
         $php = implode(
@@ -390,7 +385,7 @@ trait ConfigurationTrait
                     }
 
                     $choices = [];
-                    foreach ($matches as $position => $foundPackage) {
+                    foreach ($matches as $foundPackage) {
                         $abandoned = '';
                         if (isset($foundPackage['abandoned'])) {
                             if (is_string($foundPackage['abandoned'])) {
@@ -530,7 +525,7 @@ trait ConfigurationTrait
                     PlatformRequirementFilterFactory::ignoreAll()
                 ))
             ) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'Package %s has requirements incompatible with your PHP version, ' .
                     'PHP extensions and Composer version' .
                     $this->getPlatformExceptionDetails($candidate, $this->platformRepository),
@@ -559,7 +554,7 @@ trait ConfigurationTrait
                         RepositorySet::ALLOW_SHADOWED_REPOSITORIES
                     ))
                 ) {
-                    throw new \InvalidArgumentException(
+                    throw new InvalidArgumentException(
                         'Package ' . $name . ' exists in ' . $allReposPackage->getRepository()->getRepoName() .
                         ' and ' . $package->getRepository()->getRepoName() .
                         ' which has a higher repository priority. The packages from the higher priority repository ' .
@@ -569,7 +564,7 @@ trait ConfigurationTrait
                     );
                 }
 
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'Could not find a version of package %s matching your minimum-stability (%s). ' .
                     'Require it with an explicit version constraint allowing its desired stability.',
                     $name,
@@ -602,7 +597,7 @@ trait ConfigurationTrait
                         $effectiveMinimumStability . '".';
                 }
 
-                throw new \InvalidArgumentException(sprintf(
+                throw new InvalidArgumentException(sprintf(
                     'Could not find package %s in any version matching your PHP version, ' .
                     'PHP extensions and Composer version' .
                     $this->getPlatformExceptionDetails($candidate, $this->platformRepository) . '%s',
@@ -615,32 +610,17 @@ trait ConfigurationTrait
             $similar = $this->findSimilar($name);
             if (count($similar) > 0) {
                 if (in_array($name, $similar, true)) {
-                    throw new \InvalidArgumentException(sprintf(
+                    throw new InvalidArgumentException(sprintf(
                         "Could not find package %s. It was however found via repository search, " .
                         'which indicates a consistency issue with the repository.',
                         $name
                     ));
                 }
 
-                //                if ($input->isInteractive()) {
-                //                    $result = $io->select("<error>Could not find package
-                // $name.</error>\nPick one of these or leave empty to abort:", $similar, false, 1);
-                //                    if ($result !== false) {
-                //                        return $this->findBestVersionAndNameForPackage($io, $input, $similar[$result],
-                // $this->platformRepository, $this->preferredStability, $fixed);
-                //                    }
-                //                }
                 return $this->findTheBestVersionAndNameForPackage($similar[0], $fixed);
-
-                //                throw new \InvalidArgumentException(sprintf(
-                //                    "Could not find package %s.\n\nDid you mean " .
-                // (count($similar) > 1 ? 'one of these' : 'this') . "?\n    %s",
-                //                    $name,
-                //                    implode("\n    ", $similar)
-                //                ));
             }
 
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Could not find a matching version of package %s. Check the package spelling, ' .
                 'your version constraint and that the package is available in a stability which matches your ' .
                 'minimum-stability (%s).',
