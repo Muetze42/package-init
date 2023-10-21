@@ -136,6 +136,7 @@ trait GeneratorTrait
             'license' => $this->license,
             'require' => $this->formatDependenciesForComposerJson(),
             'require-dev' => $this->formatDependenciesForComposerJson('require-dev'),
+            'authors' => array_values($this->authors),
             'minimum-stability' => $this->minimumStability
         ]);
 

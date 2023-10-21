@@ -13,6 +13,7 @@
         }
     },
     "autoload-dev": {},
+    "authors": [],
     "scripts": {},
     "extra": {
         "laravel": {

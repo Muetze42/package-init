@@ -36,6 +36,8 @@ trait ConfigurationTrait
         $this->determineLaravelDependencies();
         $this->determineLaravelPackageResources();
         $this->determineDependencies();
+
+        $this->command->info('Package successful created');
     }
 
     /**
@@ -113,6 +115,8 @@ trait ConfigurationTrait
         ))[0];
         $phpVersions[] = PHP_MAJOR_VERSION;
         $phpVersions = array_unique($phpVersions);
+        sort($phpVersions);
+
         $php = implode(
             '|',
             array_map(fn($version) => '^' . $version . '.0', $phpVersions)
@@ -177,7 +181,8 @@ trait ConfigurationTrait
             }
         }
 
-        $method = $this->firstAuthor ? 'askSkippable' : 'ask';
+        $method = $name && $this->firstAuthor ? 'askSkippable' : 'ask';
+        $method = $name && $this->firstAuthor ? 'askSkippable' : 'ask';
         $author = $this->command->{$method}('Add author ' . (count($this->authors) + 1) . ' (name)', $name);
 
         if ($author) {
