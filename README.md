@@ -15,7 +15,7 @@ Features:
 composer require norman-huth/package-init
 ```
 
-And register command in Lura:
+And register command in [Lura](https://github.com/Muetze42/lura):
 
 ```bash
 lura register norman-huth/package-init
