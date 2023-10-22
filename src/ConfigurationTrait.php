@@ -321,7 +321,6 @@ trait ConfigurationTrait
         foreach (['require', 'require-dev'] as $key) {
             $requirements = $this->requirements[$key];
             if (
-                !count($requirements) &&
                 !$this->command->confirm(
                     'Would you like to define your dependencies (' . $key . ') interactively',
                     true
@@ -425,7 +424,12 @@ trait ConfigurationTrait
                         }
 
                         if (!$constraint) {
-                            [, $constraint] = $this->findTheBestVersionAndNameForPackage($package);
+                            try {
+                                [, $constraint] = $this->findTheBestVersionAndNameForPackage($package);
+                            } catch (\Exception $exception) {
+                                $this->command->error($exception->getMessage());
+                                continue;
+                            }
                         }
 
                         $this->command->line(sprintf(
@@ -494,16 +498,23 @@ trait ConfigurationTrait
             // Check if it is a virtual package provided by others
             $providers = $repoSet->getProviders($name);
             if (count($providers) > 0) {
-                // Todo
-                $constraint = $this->command->askAndValidate(
+//                $constraint = $this->command->askAndValidate(
+//                    'Package ' . $name . 'does not exist but is provided by ' . count($providers) .
+//                    ' packages. Which version constraint would you like to use?',
+//                    function ($value) {
+//                        $this->versionParser->parseConstraints($value);
+//
+//                        return $value;
+//                    },
+//                );
+                $constraint = $this->command->ask(
                     'Package ' . $name . 'does not exist but is provided by ' . count($providers) .
-                    ' packages. Which version constraint would you like to use?',
-                    function ($value) {
-                        $this->versionParser->parseConstraints($value);
-
-                        return $value;
-                    },
+                    ' packages. Which version constraint would you like to use?'
                 );
+
+                if ($constraint) {
+                    $constraint = $this->versionParser->parseConstraints($constraint);
+                }
 
                 if ($constraint === false) {
                     $constraint = '*';

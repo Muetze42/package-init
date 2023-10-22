@@ -21,12 +21,47 @@ trait GeneratorTrait
     {
         $this->setReplacements();
         $this->createComposerJson();
+        $this->addLicenseFile();
         $this->command->cwdDisk->makeDirectory('src');
         if (!$this->isLaravelPackage) {
             return;
         }
         $this->createLaravelServiceProvider();
         $this->createLaravelPackageFiles();
+    }
+
+    /**
+     * @return void
+     */
+    protected function addLicenseFile(): void
+    {
+        if (!$this->license) {
+            return;
+        }
+
+        $license = collect(json_decode(
+            file_get_contents(dirname(__DIR__) . '/storage/licenses.json'),
+            true
+        ))->firstWhere('key', Str::lower(trim($this->license)));
+
+        if ($license) {
+            $body = data_get($license, 'body');
+            if (!$body) {
+                return;
+            }
+            $fullname = data_get(array_values($this->authors), '0.name');
+            if (!$fullname) {
+                $fullname = explode('\\', $this->namespace)[0];
+            }
+
+            $body = str_replace(
+                ['[year]', '[fullname]'],
+                [date('Y'), $fullname],
+                $body
+            );
+
+            $this->command->cwdDisk->put('license', $body);
+        }
     }
 
     /**

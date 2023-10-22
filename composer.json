@@ -34,7 +34,7 @@
     },
     "scripts": {
         "post-package-install": [
-            "lura register norman-huth/package-init"
+            "@lura register norman-huth/package-init"
         ]
     },
     "minimum-stability": "dev",
