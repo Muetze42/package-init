@@ -41,7 +41,6 @@ class PackageServiceProvider extends ServiceProvider
         }
         $directories = glob(__DIR__ . $path . '/*', GLOB_ONLYDIR);
         foreach ($directories as $directory) {
-            appLog(trim($path, '\\/') . DIRECTORY_SEPARATOR . basename($directory));
             $commands = array_merge(
                 $commands,
                 $this->getCommands(
