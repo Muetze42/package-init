@@ -12,7 +12,7 @@ Features:
 ## Install
 
 ```bash
-composer require norman-huth/package-init
+composer global require norman-huth/package-init
 ```
 
 And register command in [Lura](https://github.com/Muetze42/lura):
