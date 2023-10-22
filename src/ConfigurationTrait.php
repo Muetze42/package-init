@@ -148,14 +148,14 @@ trait ConfigurationTrait
     {
         $this->type = $this->command->ask('Package Type');
 
-        if ($this->type && !in_array($this->type, $this->validTypes)) {
+        if ($this->type && !in_array($this->type, $this->outOfTheBoxSupportedTypes)) {
             $this->command->warn(
                 'Warning: The package type ’' . $this->type .
                 '’ will need to provide an installer capable of installing packages of that type.'
             );
             $this->command->warn(
                 'Out of the box, Composer supports four types: ' .
-                implode(', ', $this->validTypes)
+                implode(', ', $this->outOfTheBoxSupportedTypes)
             );
         }
     }

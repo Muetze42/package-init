@@ -191,7 +191,7 @@ class Command extends LuraInstaller
      * @see https://getcomposer.org/doc/04-schema.md#type
      * @var array|string[]
      */
-    protected array $validTypes = [
+    protected array $outOfTheBoxSupportedTypes = [
         'library',
         'project',
         'metapackage',
@@ -306,6 +306,8 @@ class Command extends LuraInstaller
      * @param bool|null $disableScripts If null, reads --no-scripts as default
      *
      * @throws \Composer\Json\JsonValidationException
+     * @author       Nils Adermann <naderman@naderman.de>
+     * @author       Jordi Boggiano <j.boggiano@seld.be>
      */
     public function tryComposer(?bool $disablePlugins = null, ?bool $disableScripts = null): ?Composer
     {
@@ -334,7 +336,6 @@ class Command extends LuraInstaller
 
         return PlatformRequirementFilterFactory::ignoreNothing();
     }
-
 
     /**
      * Get Major Version of a Version string.
