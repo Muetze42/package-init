@@ -8,18 +8,6 @@ use NormanHuth\Helpers\Arr;
 trait GeneratorTrait
 {
     /**
-     * Keep this keys in the `composer.json`.
-     *
-     * @var array|string[]
-     */
-    protected array $protectedJsonKeys = [
-        'require',
-        'require-dev',
-        'autoload',
-        'autoload-dev',
-    ];
-
-    /**
      * Replace all occurrences in this array on stubs.
      *
      * @var array
@@ -88,7 +76,7 @@ trait GeneratorTrait
     {
         $contents = $this->getContents('stubs/PackageServiceProvider.stub');
         $resources = array_merge($this->laravelPackageResources, [
-            'Commands' => true,
+            'Base' => true,
         ]);
         $resources = array_filter($resources);
         $fill = [
@@ -144,13 +132,9 @@ trait GeneratorTrait
             'minimum-stability' => $this->minimumStability
         ]);
 
-        $data = Arr::where($data, function (mixed $value, string $key) {
-            return in_array($key, $this->protectedJsonKeys) || !empty($value);
-        });
-
         $this->command->cwdDisk->put(
             'composer.json',
-            json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+            json_encode(array_filter($data), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
         );
     }
 
@@ -191,6 +175,7 @@ trait GeneratorTrait
             '{vendor}' => explode('/', $this->name)[0],
             '{name}' => explode('/', $this->name)[1],
             '{namespace}' => $this->namespace,
+            '{organisation}' => explode('\\', $this->namespace)[0]
         ];
     }
 

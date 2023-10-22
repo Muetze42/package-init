@@ -114,7 +114,7 @@ class Command extends LuraInstaller
         'Language Files' => true,
         'Views' => false,
         //'View Components' => false,
-        //'"About" Artisan Command' => true, # Todo
+        //'"About" Artisan Command' => true,
     ];
 
     /**

@@ -52,4 +52,31 @@ class PackageServiceProvider extends ServiceProvider
 
         return array_filter($commands, fn($command) => class_basename($command) != 'Command');
     }
+
+    /**
+     * Add additional data to the output of the “about” command.
+     *
+     * @return void
+     */
+    protected function addAbout(): void
+    {
+        if (!class_exists(\Illuminate\Foundation\Console\AboutCommand::class)) {
+            return;
+        }
+
+        $version = 'unknown';
+
+        if (
+            class_exists(\Composer\InstalledVersions::class) &&
+            method_exists(\Composer\InstalledVersions::class, 'getAllRawData')
+        ) {
+            $installedVersions = \Composer\InstalledVersions::getAllRawData();
+            $version = data_get($installedVersions, '0.versions.{vendor}/{name}.pretty_version');
+        }
+
+        \Illuminate\Foundation\Console\AboutCommand::add(
+            '{organisation}',
+            fn() => ['{vendor}/{name}' => $version]
+        );
+    }
 }
