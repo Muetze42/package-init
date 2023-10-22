@@ -21,4 +21,35 @@ class PackageServiceProvider extends ServiceProvider
     {
 {boot}
     }
+
+    /**
+     * Register all commands in the given directory.
+     *
+     * @param string $path
+     *
+     * @return array
+     */
+    protected function getCommands(string $path): array
+    {
+        $commands = [];
+        $files = glob(__DIR__ . $path . '/*.php');
+        foreach ($files as $file) {
+            $className = pathinfo($file, PATHINFO_FILENAME);
+            $commands[] = '\\' . __NAMESPACE__ . '\\' .
+                str_replace('/', '\\', trim($path, '\\/'))
+                . '\\' . $className;
+        }
+        $directories = glob(__DIR__ . $path . '/*', GLOB_ONLYDIR);
+        foreach ($directories as $directory) {
+            appLog(trim($path, '\\/') . DIRECTORY_SEPARATOR . basename($directory));
+            $commands = array_merge(
+                $commands,
+                $this->getCommands(
+                    DIRECTORY_SEPARATOR . trim($path, '\\/') . DIRECTORY_SEPARATOR . basename($directory)
+                )
+            );
+        }
+
+        return array_filter($commands, fn($command) => class_basename($command) != 'Command');
+    }
 }

@@ -1,0 +1,3 @@
+        if ($this->app->runningInConsole()) {
+            $this->commands($this->getCommands('/Console/Commands'));
+        }

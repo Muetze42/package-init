@@ -78,6 +78,7 @@ trait GeneratorTrait
         if ($this->laravelPackageResources['Views']) {
             $this->command->cwdDisk->makeDirectory('resources/views');
         }
+        $this->command->cwdDisk->makeDirectory('src/Console/Commands');
     }
 
     /**
@@ -86,7 +87,10 @@ trait GeneratorTrait
     protected function createLaravelServiceProvider(): void
     {
         $contents = $this->getContents('stubs/PackageServiceProvider.stub');
-        $resources = array_filter($this->laravelPackageResources);
+        $resources = array_merge($this->laravelPackageResources, [
+            'Commands' => true,
+        ]);
+        $resources = array_filter($resources);
         $fill = [
             'boot' => [],
             'register' => [],

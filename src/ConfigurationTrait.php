@@ -104,7 +104,11 @@ trait ConfigurationTrait
      */
     protected function determinePhpDependencies(): void
     {
-        $phpVersions[] = $this->getMajorVersion($this->findTheBestVersionAndNameForPackage('php')[1]);
+        $versions = static::getDependenciesVersions();
+        $latest = data_get($versions, 'php');
+        if ($latest) {
+            $phpVersions[] = $this->getMajorVersion($latest);
+        }
         $phpVersions[] = PHP_MAJOR_VERSION;
         $phpVersions = array_unique($phpVersions);
         sort($phpVersions);
