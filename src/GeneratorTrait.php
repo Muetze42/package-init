@@ -89,6 +89,8 @@ trait GeneratorTrait
                 'routes/api.php',
                 $this->getContents('stubs/routes/api.stub') . "\n"
             );
+            $this->command->cwdDisk->makeDirectory('src/Http/Controllers');
+            $this->command->cwdDisk->makeDirectory('src/Http/Middleware');
         }
 
         if ($this->laravelPackageResources['Language Files']) {
