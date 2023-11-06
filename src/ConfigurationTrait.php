@@ -319,7 +319,7 @@ trait ConfigurationTrait
     protected function determineDependencies(): void
     {
         foreach (['require', 'require-dev'] as $key) {
-            $requirements = $this->requirements[$key];
+            //$requirements = $this->requirements[$key];
             if (
                 !$this->command->confirm(
                     'Would you like to define your dependencies (' . $key . ') interactively',
@@ -354,6 +354,31 @@ trait ConfigurationTrait
         unset($composer, $installedRepo);
 
         while ($package = $this->command->ask('Search for a package:')) {
+            if ($package == 'laravel/nova') {
+                $versions = static::getDependenciesVersions();
+                $latest = data_get($versions, 'composer.laravel/nova', '^4.29.2');
+                $parsed = preg_replace('/[^0-9.]/', '', $latest);
+                $choices = [];
+                list($major, $minor, $patch) = explode('.', $parsed);
+
+
+                $choices[] = '^' . $major . '.0';
+
+                if ($patch != 0) {
+                    $choices[] = '^' . $major . '.' . $minor[0];
+
+                    if ($minor != 0) {
+                        $choices[] = $latest;
+                    }
+                }
+
+                $version = $this->command->choice('Wich laravel/nova version?', $choices, $choices[0]);
+
+                $existingPackages[] = 'laravel/nova';
+                $requires[] = 'laravel/nova ' . $version;
+                continue;
+            }
+
             $matches = $this->getRepos()->search($package);
 
             if (count($matches)) {
